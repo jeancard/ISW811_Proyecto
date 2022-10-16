@@ -55,3 +55,30 @@
         $files = File::files(resourse_path("posts/"));
         return array_map(fn($file) => $file->getContents(), $files);
     }`
+
+11. Generamos la sección "matter" para identificar los archivos html de los posts, mediante los siguientes códigos:
+    `---
+    title: My First Post
+    excerpt: Lorem ipsum dolor
+    date: 091022
+    slug: my-first-post
+    ---`
+
+12. En el modelo *Post* creamos una colleción de archivos que se leen de una ruta, se cargan en un "arreglo" (collect), utilizando el siguiente código:
+    `public static function all() {
+        collect(File::files(resource_path("posts")))
+            -> map(fn($file) => YamlFrontMatter::parseFile($file)) 
+            -> map(fn($document) => new Post($document->title, $document->excerpt, $document->date, $document->body(), $document->slug)
+            ) -> sortBy('date');
+        });
+    }`
+
+13. Aún los archivos html se cargan según su nombre, queremos que se ordenen según su fecha de creación, además se agrega la opción de que la cache recuerde los archivos cargados, esto se logra con el siguiente código:
+    `public static function all() {
+        return cache() -> rememberForever('posts.all', function() {
+            return collect(File::files(resource_path("posts")))
+            -> map(fn($file) => YamlFrontMatter::parseFile($file)) 
+            -> map(fn($document) => new Post($document->title, $document->excerpt, $document->date, $document->body(), $document->slug)
+            ) -> sortBy('date');
+        });
+    }`

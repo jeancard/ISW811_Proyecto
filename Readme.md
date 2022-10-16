@@ -5,3 +5,4 @@ En este guión se muestra un resumen de las lecciones del curso Laravel from the
 ## Tabla de Contenido
 
 [1. SECTION 2: The Basics](./docs/Section2.md)
+[2. SECTION 3: Blade](./docs/Section3.md)
