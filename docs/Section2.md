@@ -1,3 +1,5 @@
+[<Volver](../Readme.md)
+
 # SECTION 2: The Basics
 
 1. Se comienza analizando el archivo de rutas, el código para generar la ruta inicial utilizado es el siguiente:
@@ -14,10 +16,10 @@
     });` 
 
 4. Se generan artículos que se agregan a la vista *posts.blade.php*, viéndose de la siguiente forma:
-   ![articles](./images/articles.png)
+   ![articles](../images/articles.png)
 
 5. Se crean archivos .html para cargar vistas de los posts:
-   ![htmlFiles](./images/htmlFiles.png)
+   ![htmlFiles](../images/htmlFiles.png)
 
 6. Se crean rutas para acceder a los posts al hacer click en ellos, se utiliza el siguiente código:
     `Route::get('posts/{post}', function ($slug) {
@@ -39,7 +41,7 @@
     `$post = cache()->remember("posts.{$slug}", 1200, fn() => file_get_contents($path));`
 
 9. Creamos una clase o  modelo llamada *Post* para realizar algunos métodos como buscar, se debe ubicar en la carpeta *Models* del directorio *app*:
-    ![PostModel](./images/PostModel.png)
+    ![PostModel](../images/PostModel.png)
 
 10. Se programan los métodos de buscar un archivo y encontrar todos los archivos. se utilizan los siguientes códigos:
     `public static function find($slug) {
