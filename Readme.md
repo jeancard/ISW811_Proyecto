@@ -8,4 +8,4 @@ En este guión se muestra un resumen de las lecciones del curso Laravel from the
 
 [2. SECTION 3: Blade](./docs/Section3.md)
 
-[3. SECTION 4: Working With Databases](./docs/Section3.md)
+[3. SECTION 4: Working With Databases](./docs/Section4.md)

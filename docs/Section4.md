@@ -91,5 +91,47 @@ Sin embargo, también debemos modificar el enlace de: `<a href="/posts/{{$post->
             'excerpt' => 'Lorem ipsum dorlar sit amet.',
             'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Et illum quidem dolor repellendus ducimus illo doloremque perspiciatis at. Veniam nam ad, dolor id animi harum ut alias modi illo ea.'
         ]);`
-        Esto para al refrescar la base de datos con este comando `php artisan migrate:fresh --seeds` y al mismo tiempo volver a alimentar la base de datos, ahorrandonos tiempo para pruebas.
+        Esto para al refrescar la base de datos con este comando `php artisan migrate:fresh --seed` y al mismo tiempo volver a alimentar la base de datos, ahorrandonos tiempo para pruebas.
     }
+
+15. Creamos factories para Post, Category y User, de manera que al alimentar la base de datos, en el factory de Post, creamos tanto el usuario como la categoria, con el siguiente código:
+    `public function definition()
+    {
+        return [
+            'user_id' => User::factory(),
+            'category_id' => Category::factory(),
+            'title' => $this->faker->sentence,
+            'slug' => $this->faker->slug,
+            'excerpt' => $this->faker->sentence,
+            'body' => $this->faker->paragraph
+        ];
+    }`.
+    De esta manera alimentamos la base datos con las relaciones establecidas en las migraciones.
+
+16. Modificamos el código del DatabaseSeeder, para que al crear un Post, lo asocie a un usuario ya existente en la base de datos, en este caso *John Doe*, con este código:
+    `public function run()
+    {
+        $user = User::factory()->create([
+            'name' => 'John Doe'
+        ]);
+        Post::factory(5)->create([
+            'user_id' => $user->id
+        ]);
+    }`.
+
+17. Agregamos a las rutas la cegoría y el autor, con el objetivo de no generar consultas de más a la base de datos, utilizamos el siguiente código: 
+    `Route::get('/', function () {
+        return view('posts', [
+            'posts' => Post::latest('published_at')->with(['category', 'author'])->get()
+        ]);
+    `});, mediante la extensión *Clockwork*, se observan ahora pocas consultas:
+        ![clockwork](../images/clockwork.png)
+    
+18. En el archivo de rutas, agregamos una ruta a las vistas *Post* y *Posts*, para poder ver los posts por cada usuario (autor), se agrega el siguiente código:
+    `Route::get('authors/{author:username}', function(User $author) {
+        return view('posts', [
+            'posts' => $author->posts 
+        ]);
+    });`.
+
+19. Para evitar tener que agregar la consulta por categoría y autor a cada ruta, podemos agregar en el modelo el siguiente código: `  protected $with = ['category', 'author']`, de esta manera, al consultar un Post, nos traerá también la categoría y el autor (usuario).
