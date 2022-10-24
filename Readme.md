@@ -15,3 +15,7 @@ En este guión se muestra un resumen de las lecciones del curso Laravel from the
 [5. SECTION 6: Search](./docs/Section6.md)
 
 [6. SECTION 7: Filtering](./docs/Section7.md)
+
+[7. SECTION 8: Paginating](./docs/Section8.md)
+
+[8. SECTION 8: Forms And Authentication](./docs/Section9.md)
